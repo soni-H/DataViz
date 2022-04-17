@@ -44,8 +44,8 @@ public class FlowMatrixImpl implements FlowMatrix {
                 if(resultSet[0]!=null)
                     heatMapCell.setHeat(Double.parseDouble(resultSet[0].toString()));
                 else heatMapCell.setHeat(0);
-                heatMapCell.setY(resultSet[1].toString());
-                heatMapCell.setX(resultSet[2].toString());
+                heatMapCell.setY(resultSet[1].toString().trim());
+                heatMapCell.setX(resultSet[2].toString().trim());
                 response.add(heatMapCell);
             }
             ObjectMapper objectMapper = new ObjectMapper();
