@@ -14,6 +14,19 @@ import java.util.List;
 public class Controller {
 
     @GET
+    @Path("/viewMatrixMap")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getMatrixMapView(@QueryParam("state") String state,@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate){
+        String response=null;
+        try{
+            response=new FlowMatrixImpl().getFlowMatrix(state,fromDate,toDate);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    @GET
     @Path("/viewByDefault")
     @Produces(MediaType.APPLICATION_JSON)
     public List<PopulationResponse> getDefaultView(@QueryParam("state") String state,@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate){
@@ -33,6 +46,7 @@ public class Controller {
         String response=null;
         try{
             response=new HierariachalFlowImpl().viewHierariachalFlow(state,fromDate,toDate);
+            System.out.println(response);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -46,22 +60,12 @@ public class Controller {
         String response=null;
         try{
             response=new FlowDataImpl().getFlowConnectors(state,fromDate,toDate);
+            System.out.println(response);
         }catch(Exception e){
             e.printStackTrace();
         }
         return response;
     }
-    @GET
-    @Path("/viewMatrixMap")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getMatrixMapView(@QueryParam("state") String state,@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate){
-        String response=null;
-        try{
-            response=new FlowMatrixImpl().getFlowMatrix(state,fromDate,toDate);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return response;
-    }
+
 
 }
