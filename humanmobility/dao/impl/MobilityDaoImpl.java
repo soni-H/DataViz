@@ -15,8 +15,11 @@ public class MobilityDaoImpl implements MobilityDao {
     @Override
     public List<PopulationResponse> viewPopulationTimeSeries(String state,String fromDate,String toDate) {
 
+        //N21:
         List<PopulationResponse> populationResponses=new ArrayList<>();
+        //N22:
         try (Session session = HibernateSessionUtil.getSession()) {
+            //N23:
             SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date from,to;
             from=formatter.parse(fromDate);
@@ -44,7 +47,8 @@ public class MobilityDaoImpl implements MobilityDao {
              populationResponses.add(populationResponse);
             }
 
-        } catch (Exception exception) {
+        } //N24:
+        catch (Exception exception) {
             exception.printStackTrace();
             System.out.print(exception.getLocalizedMessage());
 

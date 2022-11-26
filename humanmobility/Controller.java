@@ -17,10 +17,14 @@ public class Controller {
     @Path("/viewMatrixMap")
     @Produces(MediaType.APPLICATION_JSON)
     public String getMatrixMapView(@QueryParam("state") String state,@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate){
+        //N1: state="CA", fromDate="12", toDate="17";
         String response=null;
+        //N2:
         try{
             response=new FlowMatrixImpl().getFlowMatrix(state,fromDate,toDate);
-        }catch(Exception e){
+        }
+        //N3:
+        catch(Exception e){
             e.printStackTrace();
         }
         return response;
@@ -30,12 +34,16 @@ public class Controller {
     @Path("/viewByDefault")
     @Produces(MediaType.APPLICATION_JSON)
     public List<PopulationResponse> getDefaultView(@QueryParam("state") String state,@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate){
+        //N1: state='CA',fromDate=13,toDate=17
         List<PopulationResponse> responses=null;
+        //N2:
         try{
             responses=new MobilityDaoImpl().viewPopulationTimeSeries(state,fromDate,toDate);
-        }catch(Exception e){
+        }//N3
+         catch(Exception e){
             e.printStackTrace();
         }
+        //N4
         return responses;
     }
 

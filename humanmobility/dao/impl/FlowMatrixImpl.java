@@ -14,20 +14,25 @@ import java.util.List;
 public class FlowMatrixImpl implements FlowMatrix {
     @Override
     public String getFlowMatrix(String state, String fromDate, String toDate) {
+        //N21:
         String parentResponse=null;
+        //N22:
         try (Session session = HibernateSessionUtil.getSession()) {
+            //N24:
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date from, to;
             from = formatter.parse(fromDate);
             to = formatter.parse(toDate);
             List<Object[]> queryResponses = null;
             if (state.equalsIgnoreCase("All")) {
+                //N25:
                 queryResponses = session.createQuery("select sum(w.populationFlow),g.locationName as Origin,g2.locationName as Destination from WeeklyFlow  w \n" +
                         "inner join Gazetteer g on substring(w.geoidOrigin,1,2)=cast(g.geoid as string) inner join Gazetteer g2 on \n" +
                         "substring(w.geoidDestination,1,2)=cast(g2.geoid as string) where w.dateTo<=:to and\n" +
                         "w.dateFrom>=:from group by g.geoid,\n" +
                         "g2.geoid order by g.geoid,g2.geoid").setParameter("from", from).setParameter("to", to).getResultList();
             }else{
+                //N26:
                 int stateNumber=Integer.parseInt(state);
                 queryResponses = session.createQuery("select sum(w.populationFlow),g1.locationName,g2.locationName from Gazetteer  g1 inner join Gazetteer g2 on 1=1 \n" +
                                 " and g1.geoid<> :sno and g2.geoid<>:sno and substring(g1.geoid,1,2)=:state and substring(g2.geoid,1,2) =:state\n" +
@@ -37,6 +42,7 @@ public class FlowMatrixImpl implements FlowMatrix {
                                 "g1.geoid,g2.geoid order by g1.geoid,g2.geoid")
                         .setParameter("fromDate", from).setParameter("toDate", to).setParameter("state",state).setParameter("sno",stateNumber).getResultList();
             }
+            //N27:
             List<HeatMapCell> response=new ArrayList<>();
             HeatMapCell heatMapCell=null;
             for(Object[] resultSet : queryResponses){
@@ -51,7 +57,9 @@ public class FlowMatrixImpl implements FlowMatrix {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             parentResponse = objectMapper.writeValueAsString(response);
-        }catch(Exception e){
+        }
+        //N23:
+        catch(Exception e){
             e.printStackTrace();
             System.out.println(e);
         }
